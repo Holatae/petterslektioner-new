@@ -2,9 +2,7 @@ package petterslektioner.texteditor;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileSystemView;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class TextEditorActions {
@@ -12,8 +10,41 @@ public class TextEditorActions {
 
     }
 
-    public void saveFileButtonAction(){
+    public String saveFileButtonAction(String filePath, String text){
+        filePath = showSaveDialog(filePath);
+        return saveFile(filePath, text);
 
+    }
+
+    private static String saveFile(String filePath, String text) {
+        filePath = showSaveDialog(filePath);
+        if (filePath == null) return filePath;
+
+        File file = new File(filePath);
+        try {
+            FileWriter fileWriter = new FileWriter(file);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            bufferedWriter.write(text);
+
+            bufferedWriter.close();
+            fileWriter.close();
+            return filePath;
+        }catch (IOException e) {
+            System.err.println("IOException has been lifted.");
+        }
+        return null;
+    }
+
+    private static String showSaveDialog(String filePath) {
+        if ( filePath == null || filePath.isEmpty()){
+            JFileChooser j = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+            int r = j.showSaveDialog(null);
+            if (r != JFileChooser.APPROVE_OPTION) {
+                return null;
+            }
+            filePath = j.getSelectedFile().getAbsolutePath();
+        }
+        return filePath;
     }
 
     /**
@@ -24,7 +55,6 @@ public class TextEditorActions {
         int r = j.showOpenDialog(null);
         if (r != JFileChooser.APPROVE_OPTION) {return null;}
         ArrayList<String> currentFileContent = new ArrayList<>();
-
 
         try{
             FileReader fileReader = new FileReader(j.getSelectedFile().getAbsoluteFile());
@@ -42,5 +72,11 @@ public class TextEditorActions {
             return null;
         }
         return new String[] {j.getSelectedFile().getAbsolutePath(), currentFileContent.toString()};
+    }
+
+    public String saveAsFileButtonAction(String text){
+        String filePath = showSaveDialog(null);
+        saveFile(filePath, text);
+        return filePath;
     }
 }

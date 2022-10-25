@@ -39,6 +39,7 @@ public class Texteditor extends javax.swing.JFrame {
         jMenu1 = new javax.swing.JMenu();
         openFile = new javax.swing.JMenuItem();
         saveFile = new javax.swing.JMenuItem();
+        saveAsFileButton = new javax.swing.JMenuItem();
         lockFileButton = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
@@ -52,7 +53,6 @@ public class Texteditor extends javax.swing.JFrame {
         jLabel1.setText("Current File:");
 
         filePathText.setFont(new java.awt.Font("Liberation Sans", 1, 12)); // NOI18N
-        filePathText.setText("/home/victor");
 
         jLabel3.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
         jLabel3.setText("Work with files");
@@ -86,6 +86,15 @@ public class Texteditor extends javax.swing.JFrame {
             }
         });
         jMenu1.add(saveFile);
+
+        saveAsFileButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_DOWN_MASK | java.awt.event.InputEvent.CTRL_DOWN_MASK));
+        saveAsFileButton.setText("Save as");
+        saveAsFileButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                saveAsFileButtonActionPerformed(evt);
+            }
+        });
+        jMenu1.add(saveAsFileButton);
 
         lockFileButton.setText("Lock File");
         lockFileButton.addActionListener(new java.awt.event.ActionListener() {
@@ -159,6 +168,7 @@ public class Texteditor extends javax.swing.JFrame {
     private void openFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileActionPerformed
         TextEditorActions actions = new TextEditorActions();
         String[] returnvalue = actions.openFileButtonAction();
+        if (returnvalue == null){return;}
         
         filePathText.setText(returnvalue[0]);
         fileContentTextbox.setText(returnvalue[1]);
@@ -171,7 +181,17 @@ public class Texteditor extends javax.swing.JFrame {
 
     private void saveFileActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileActionPerformed
         // TODO add your handling code here:
+        TextEditorActions actions = new TextEditorActions();
+        filePathText.setText(actions.saveFileButtonAction(filePathText.getText(), fileContentTextbox.getText()));
+        
     }//GEN-LAST:event_saveFileActionPerformed
+
+    private void saveAsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileButtonActionPerformed
+        // TODO add your handling code here:
+        TextEditorActions actions = new TextEditorActions();
+        filePathText.setText(actions.saveAsFileButtonAction(fileContentTextbox.getText()));
+        
+    }//GEN-LAST:event_saveAsFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -223,6 +243,7 @@ public class Texteditor extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JMenuItem lockFileButton;
     private javax.swing.JMenuItem openFile;
+    private javax.swing.JMenuItem saveAsFileButton;
     private javax.swing.JMenuItem saveFile;
     // End of variables declaration//GEN-END:variables
 }
