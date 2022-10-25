@@ -18,7 +18,7 @@ public class TextEditorActions {
 
     private static String saveFile(String filePath, String text) {
         filePath = showSaveDialog(filePath);
-        if (filePath == null) return filePath;
+        if (filePath == null) return null;
 
         File file = new File(filePath);
         try {
