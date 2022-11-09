@@ -169,7 +169,7 @@ public class Texteditor extends javax.swing.JFrame {
         TextEditorActions actions = new TextEditorActions();
         String[] returnvalue = actions.openFileButtonAction();
         if (returnvalue == null){return;}
-        
+
         filePathText.setText(returnvalue[0]);
         fileContentTextbox.setText(returnvalue[1]);
     }//GEN-LAST:event_openFileActionPerformed
@@ -183,24 +183,24 @@ public class Texteditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         TextEditorActions actions = new TextEditorActions();
         filePathText.setText(actions.saveFileButtonAction(filePathText.getText(), fileContentTextbox.getText()));
-        
+
     }//GEN-LAST:event_saveFileActionPerformed
 
     private void saveAsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileButtonActionPerformed
         // TODO add your handling code here:
         TextEditorActions actions = new TextEditorActions();
         filePathText.setText(actions.saveAsFileButtonAction(fileContentTextbox.getText()));
-        
+
     }//GEN-LAST:event_saveAsFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {

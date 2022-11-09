@@ -19,8 +19,33 @@ public class NumberGameMainGUI extends Container {
         easyButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //Show a Error window
-                JOptionPane.showMessageDialog(null, "Easy Button Pressed");
+                //Start a new Game with difficulty easy
+                NumberGame numberGame = new NumberGame(NumberGame.Difficulty.EASY);
+
+            }
+        });
+
+        mediumButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Start a new Game with difficulty medium
+                NumberGame numberGame = new NumberGame(NumberGame.Difficulty.MEDIUM);
+            }
+        });
+
+        hardButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Start a new Game with difficulty hard
+                NumberGame numberGame = new NumberGame(NumberGame.Difficulty.HARD);
+            }
+        });
+
+        impossibleButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Start a new Game with difficulty impossible
+                NumberGame numberGame = new NumberGame(NumberGame.Difficulty.IMPOSSIBLE);
             }
         });
     }
