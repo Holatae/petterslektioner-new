@@ -35,9 +35,9 @@ public class NumberGameGUI extends javax.swing.JFrame {
         guessButton = new javax.swing.JButton();
         guessTextArea = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        minValueLabel1 = new javax.swing.JLabel();
+        guessesLeftLabel = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        minValueLabel2 = new javax.swing.JLabel();
+        totalNumberOfGuesses = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         difficultyLabel = new javax.swing.JLabel();
         debugLabel = new javax.swing.JLabel();
@@ -66,18 +66,17 @@ public class NumberGameGUI extends javax.swing.JFrame {
             }
         });
 
-        jLabel3.setText("Current Guess");
+        jLabel3.setText("Guesses left");
 
-        minValueLabel1.setText("5");
+        guessesLeftLabel.setText("5");
 
         jLabel4.setText("Number of guesses:");
 
-        minValueLabel2.setText("5");
+        totalNumberOfGuesses.setText("5");
 
         jLabel5.setText("FUNNY TEXT HERE SOMETIME");
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        difficultyLabel.setText("EASY");
         difficultyLabel.setText(currentGame.getCurrentDifficulty());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -108,7 +107,7 @@ public class NumberGameGUI extends javax.swing.JFrame {
                         .addGap(27, 27, 27)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(minValueLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(guessesLeftLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -126,7 +125,7 @@ public class NumberGameGUI extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(135, 135, 135)
-                    .addComponent(minValueLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(totalNumberOfGuesses, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(234, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
@@ -149,7 +148,7 @@ public class NumberGameGUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(minValueLabel1)
+                    .addComponent(guessesLeftLabel)
                     .addComponent(difficultyLabel))
                 .addGap(4, 4, 4))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -160,7 +159,7 @@ public class NumberGameGUI extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(278, Short.MAX_VALUE)
-                    .addComponent(minValueLabel2)
+                    .addComponent(totalNumberOfGuesses)
                     .addContainerGap()))
         );
 
@@ -185,6 +184,7 @@ public class NumberGameGUI extends javax.swing.JFrame {
     private javax.swing.JLabel difficultyLabel;
     private javax.swing.JButton guessButton;
     private javax.swing.JTextField guessTextArea;
+    private javax.swing.JLabel guessesLeftLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -192,7 +192,6 @@ public class NumberGameGUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel maxValueLable;
     private javax.swing.JLabel minValueLabel;
-    private javax.swing.JLabel minValueLabel1;
-    private javax.swing.JLabel minValueLabel2;
+    private javax.swing.JLabel totalNumberOfGuesses;
     // End of variables declaration//GEN-END:variables
 }

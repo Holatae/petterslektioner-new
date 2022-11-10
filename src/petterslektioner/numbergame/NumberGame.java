@@ -1,13 +1,14 @@
 package petterslektioner.numbergame;
 
-import javax.swing.*;
-
 public class NumberGame {
     private final int correctNumber;
     private int numberOfGuesses;
-    private int currentNumberOfGuess = 0;
+    private int guessesLeft;
     private final int maxNumberOfGuesses;
 
+    /**
+     * first value is the minimum number, second value is the maximum number
+     */
     private final int[] range = new int[2];
 
     public enum Difficulty {
@@ -23,7 +24,7 @@ public class NumberGame {
         }
     }
 
-    private Difficulty currentDifficulty;
+    private final Difficulty currentDifficulty;
 
     public String getCurrentDifficulty(){
         return currentDifficulty.getDifficulty();
@@ -60,7 +61,8 @@ public class NumberGame {
             }
             default -> throw new IllegalStateException("Unexpected value: " + difficulty);
         }
-        correctNumber = (int) (Math.random() * range[0]);
+        guessesLeft = maxNumberOfGuesses;
+        correctNumber = (int) (Math.random() * (range[1] - range[0] + 1) + range[0]);
 
         NumberGameGUI.currentGame = this;
         new NumberGameGUI().setVisible(true);
@@ -74,12 +76,12 @@ public class NumberGame {
      * @param guess Returns true if guess is correct
      */
     public boolean checkIfWin(int guess){
-        currentNumberOfGuess -= 1;
+        guessesLeft -= 1;
         return guess == correctNumber;
     }
 
-    public int getCurrentNumberOfGuess() {
-        return currentNumberOfGuess;
+    public int getGuessesLeft() {
+        return guessesLeft;
     }
 
 }
