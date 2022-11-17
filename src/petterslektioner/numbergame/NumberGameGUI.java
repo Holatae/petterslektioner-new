@@ -48,9 +48,9 @@ public class NumberGameGUI extends javax.swing.JFrame {
 
         jLabel2.setText("Max Value:");
 
-        minValueLabel.setText("0");
+        minValueLabel.setText(String.valueOf(currentGame.getRange()[0]));
 
-        maxValueLable.setText("10000");
+        maxValueLable.setText(String.valueOf(currentGame.getRange()[1]));
 
         guessButton.setText("Guess");
         guessButton.addActionListener(new java.awt.event.ActionListener() {
@@ -68,11 +68,11 @@ public class NumberGameGUI extends javax.swing.JFrame {
 
         jLabel3.setText("Guesses left");
 
-        guessesLeftLabel.setText("5");
+        guessesLeftLabel.setText(String.valueOf(currentGame.getGuessesLeft()));
 
         jLabel4.setText("Number of guesses:");
 
-        totalNumberOfGuesses.setText("5");
+        totalNumberOfGuesses.setText(String.valueOf(currentGame.getMaxNumberOfGuesses()));
 
         jLabel5.setText("FUNNY TEXT HERE SOMETIME");
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -125,6 +125,7 @@ public class NumberGameGUI extends javax.swing.JFrame {
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(135, 135, 135)
+                        .addGap(14)
                     .addComponent(totalNumberOfGuesses, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(234, Short.MAX_VALUE)))
         );
@@ -168,7 +169,10 @@ public class NumberGameGUI extends javax.swing.JFrame {
 
     private void guessButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guessButtonActionPerformed
         NumberGameGUIFunctions nggf = new NumberGameGUIFunctions();
-        nggf.GuessButtonPressed(currentGame, guessTextArea.getText(), debugLabel);
+        if(!nggf.GuessButtonPressed(currentGame, guessTextArea.getText(), debugLabel)){
+            guessButton.setEnabled(false);
+        }
+        guessesLeftLabel.setText(String.valueOf(currentGame.getGuessesLeft()));
     }//GEN-LAST:event_guessButtonActionPerformed
 
     private void guessTextAreaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guessTextAreaActionPerformed

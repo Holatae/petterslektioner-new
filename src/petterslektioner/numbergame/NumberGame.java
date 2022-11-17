@@ -84,4 +84,18 @@ public class NumberGame {
         return guessesLeft;
     }
 
+    public int[] getRange() {
+        return range;
+    }
+
+    public int getMaxNumberOfGuesses() {
+        return maxNumberOfGuesses;
+    }
+
+    public boolean isToLow(int guessInt){
+        if (guessInt < correctNumber){
+            return true;
+        }
+        return false;
+    }
 }
