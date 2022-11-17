@@ -1,5 +1,7 @@
 package petterslektioner.numbergame;
 
+import javax.swing.*;
+
 public class NumberGame {
     private final int correctNumber;
     private int numberOfGuesses;
@@ -10,11 +12,21 @@ public class NumberGame {
      * first value is the minimum number, second value is the maximum number
      */
     private final int[] range = new int[2];
+    private String currentGameURL = "localhost:8080";
+
+    public String getCurrentGameURL() {
+        return currentGameURL;
+    }
+
+    public void setCurrentGameURL(String currentGameURL) {
+        this.currentGameURL = currentGameURL;
+    }
 
     public enum Difficulty {
         EASY("EASY"), MEDIUM("MEDIUM"), HARD("HARD"), IMPOSSIBLE("IMPOSSIBLE");
 
-        private String difficulty;
+        private final String difficulty;
+
         Difficulty(String difficulty) {
             this.difficulty = difficulty;
         }
@@ -64,8 +76,19 @@ public class NumberGame {
         guessesLeft = maxNumberOfGuesses;
         correctNumber = (int) (Math.random() * (range[1] - range[0] + 1) + range[0]);
 
+        while (true) {
+            String url = JOptionPane.showInputDialog("Please enter a server leaderboard URL");
+            if (checkIfURLIsValid(url)) {
+                currentGameURL = url;
+                break;
+            }
+        }
         NumberGameGUI.currentGame = this;
         new NumberGameGUI().setVisible(true);
+    }
+
+    private boolean checkIfURLIsValid(String url) {
+        return HttpClientClass.checkIfValidServer(url);
     }
 
     public int getCorrectNumber() {
@@ -75,7 +98,7 @@ public class NumberGame {
     /**
      * @param guess Returns true if guess is correct
      */
-    public boolean checkIfWin(int guess){
+    public boolean checkIfWin(int guess) {
         guessesLeft -= 1;
         return guess == correctNumber;
     }
@@ -93,9 +116,6 @@ public class NumberGame {
     }
 
     public boolean isToLow(int guessInt){
-        if (guessInt < correctNumber){
-            return true;
-        }
-        return false;
+        return guessInt < correctNumber;
     }
 }
