@@ -74,7 +74,8 @@ public class NumberGameGUI extends javax.swing.JFrame {
 
         totalNumberOfGuesses.setText(String.valueOf(currentGame.getMaxNumberOfGuesses()));
 
-        jLabel5.setText("FUNNY TEXT HERE SOMETIME");
+        String leaderBoardLink = "http://localhost:8000/api/v1/get-leaderboard";
+        jLabel5.setText("Link to Leaderboard: " + leaderBoardLink);
         jLabel5.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         difficultyLabel.setText(currentGame.getCurrentDifficulty());

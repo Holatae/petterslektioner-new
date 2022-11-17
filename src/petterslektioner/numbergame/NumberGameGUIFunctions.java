@@ -1,14 +1,12 @@
 package petterslektioner.numbergame;
 
-import netscape.javascript.JSObject;
-
 import javax.swing.*;
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 public class NumberGameGUIFunctions {
@@ -31,64 +29,23 @@ public class NumberGameGUIFunctions {
         }
         //End of Error Handling
 
-        if (currentGame.checkIfWin(guessInt) || true){
+        if (currentGame.checkIfWin(guessInt)){
             //Show wining window
             JOptionPane.showMessageDialog(null, "You won!");
             String name = JOptionPane.showInputDialog(null, "Skriv ditt namn");
 
-
-
-
-
-
-            try {
                 var values = new JSONObject();
                 try {
                     values.put("name",name);
-                    values.put("ip", "1231345");
+                    values.put("ip", getPublicIP());
                     values.put("score", 23);
-                    values.put("date", "no Thanks");
+                    values.put("date", getDate());
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
-                URL url = new URL("http://localhost:8000/api/v1/post-new-score");
-                HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                con.setRequestMethod("POST");
-                con.setRequestProperty("Content-Type", "application/json; utf-8");
-                con.setRequestProperty("Accept", "application/json");
-                con.setDoOutput(true);
-                try(DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
-                    wr.writeBytes(values.toString());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                try(BufferedReader br = new BufferedReader(
-                        new InputStreamReader(con.getInputStream(), "utf-8"))) {
-                    StringBuilder response = new StringBuilder();
-                    String responseLine = null;
-                    while ((responseLine = br.readLine()) != null) {
-                        response.append(responseLine.trim());
-                    }
-                    System.out.println(response.toString());
-                }
 
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            sendPostRequestToServer(values);
 
-/*            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://127.0.0.1:8000/api/v1/post-new-score"))
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-            System.out.println(request.method());
-            try {
-                client.send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }*/
         }
         else {
             if (currentGame.isToLow(guessInt)){
@@ -105,5 +62,61 @@ public class NumberGameGUIFunctions {
         }
 
         return true;
+    }
+
+    private static void sendPostRequestToServer(JSONObject values) {
+        HttpURLConnection con = null;
+        try {
+            URL url = new URL("http://localhost:8000/api/v1/post-new-score");
+            con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("POST");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        con.setRequestProperty("Content-Type", "application/json; utf-8");
+        con.setRequestProperty("Accept", "application/json");
+        con.setDoOutput(true);
+        try(DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+            wr.writeBytes(values.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try(BufferedReader br = new BufferedReader(
+                new InputStreamReader(con.getInputStream(), StandardCharsets.UTF_8))) {
+            StringBuilder response = new StringBuilder();
+            String responseLine = null;
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine.trim());
+            }
+            System.out.println(response.toString());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getLocalIP(){
+        try (final DatagramSocket datagramSocket = new DatagramSocket()) {
+            datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 12345);
+            return datagramSocket.getLocalAddress().getHostAddress();
+        } catch (UnknownHostException | SocketException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getPublicIP(){
+        try {
+            URL whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            return in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getDate(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now).toString();
     }
 }
