@@ -3,19 +3,14 @@ package petterslektioner.numbergame;
 import netscape.javascript.JSObject;
 
 import javax.swing.*;
+import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.HashMap;
-
 public class NumberGameGUIFunctions {
     public boolean GuessButtonPressed(NumberGame currentGame, String guess, JLabel debugLabel) {
         int guessInt;
@@ -56,22 +51,27 @@ public class NumberGameGUIFunctions {
                 } catch (JSONException e) {
                     throw new RuntimeException(e);
                 }
+                URL url = new URL("http://localhost:8000/api/v1/post-new-score");
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestMethod("POST");
+                con.setRequestProperty("Content-Type", "application/json; utf-8");
+                con.setRequestProperty("Accept", "application/json");
+                con.setDoOutput(true);
+                try(DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+                    wr.writeBytes(values.toString());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                try(BufferedReader br = new BufferedReader(
+                        new InputStreamReader(con.getInputStream(), "utf-8"))) {
+                    StringBuilder response = new StringBuilder();
+                    String responseLine = null;
+                    while ((responseLine = br.readLine()) != null) {
+                        response.append(responseLine.trim());
+                    }
+                    System.out.println(response.toString());
+                }
 
-                System.out.println(values);
-
-                URL url = new URL("http://127.0.0.1:8000/api/v1/post-new-score");
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true);
-
-                DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-                dos.writeBytes(values.toString());
-                dos.flush();
-                dos.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
