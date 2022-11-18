@@ -1,21 +1,15 @@
 package petterslektioner.numbergame;
 
-import netscape.javascript.JSObject;
-
-import javax.swing.*;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.HashMap;
 
+import javax.swing.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 public class NumberGameGUIFunctions {
     public boolean GuessButtonPressed(NumberGame currentGame, String guess, JLabel debugLabel) {
         int guessInt;
@@ -36,59 +30,28 @@ public class NumberGameGUIFunctions {
         }
         //End of Error Handling
 
-        if (currentGame.checkIfWin(guessInt) || true){
+        if (currentGame.checkIfWin(guessInt)){
             //Show wining window
             JOptionPane.showMessageDialog(null, "You won!");
             String name = JOptionPane.showInputDialog(null, "Skriv ditt namn");
 
-
-
-
-
+            var values = new JSONObject();
+            try {
+                values.put("name", name);
+                values.put("ip", getPublicIP());
+                values.put("difficulty", currentGame.getCurrentDifficulty());
+                values.put("date", getDate());
+            } catch (JSONException e) {
+                throw new RuntimeException(e);
+            }
 
             try {
-                var values = new JSONObject();
-                try {
-                    values.put("name",name);
-                    values.put("ip", "1231345");
-                    values.put("score", 23);
-                    values.put("date", "no Thanks");
-                } catch (JSONException e) {
-                    throw new RuntimeException(e);
-                }
-
-                System.out.println(values);
-
-                URL url = new URL("http://127.0.0.1:8000/api/v1/post-new-score");
-                HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-
-                conn.setRequestProperty("Accept", "application/json");
-                conn.setDoOutput(true);
-
-                DataOutputStream dos = new DataOutputStream(conn.getOutputStream());
-                dos.writeBytes(values.toString());
-                dos.flush();
-                dos.close();
+                HttpClientClass.sendPostRequestToServer(values, currentGame.getCurrentGameURL());
+                return false;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
 
-/*            HttpClient client = HttpClient.newHttpClient();
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://127.0.0.1:8000/api/v1/post-new-score"))
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                    .build();
-            System.out.println(request.method());
-            try {
-                client.send(request, HttpResponse.BodyHandlers.ofString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }*/
         }
         else {
             if (currentGame.isToLow(guessInt)){
@@ -105,5 +68,33 @@ public class NumberGameGUIFunctions {
         }
 
         return true;
+    }
+
+
+
+    private String getLocalIP(){
+        try (final DatagramSocket datagramSocket = new DatagramSocket()) {
+            datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 12345);
+            return datagramSocket.getLocalAddress().getHostAddress();
+        } catch (UnknownHostException | SocketException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getPublicIP(){
+        try {
+            URL whatismyip = new URL("http://checkip.amazonaws.com");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    whatismyip.openStream()));
+            return in.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private String getDate(){
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return dtf.format(now);
     }
 }
