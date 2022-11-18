@@ -39,7 +39,7 @@ public class NumberGameGUIFunctions {
             try {
                 values.put("name", name);
                 values.put("ip", getPublicIP());
-                values.put("score", 23);
+                values.put("difficulty", currentGame.getCurrentDifficulty());
                 values.put("date", getDate());
             } catch (JSONException e) {
                 throw new RuntimeException(e);

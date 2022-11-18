@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 public class HttpClientClass {
     public static void sendPostRequestToServer(JSONObject values, String serverURL) throws IOException {
         HttpURLConnection con = null;
+        System.out.println(values);
         try {
             URL url = new URL(serverURL + "/api/v1/post-new-score");
             con = (HttpURLConnection) url.openConnection();
