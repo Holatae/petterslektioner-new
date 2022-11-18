@@ -47,6 +47,7 @@ public class NumberGameGUIFunctions {
 
             try {
                 HttpClientClass.sendPostRequestToServer(values, currentGame.getCurrentGameURL());
+                return false;
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
