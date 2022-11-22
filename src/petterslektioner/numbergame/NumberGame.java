@@ -4,7 +4,6 @@ import javax.swing.*;
 
 public class NumberGame {
     private final int correctNumber;
-    private int numberOfGuesses;
     private int guessesLeft;
     private final int maxNumberOfGuesses;
 
@@ -12,14 +11,10 @@ public class NumberGame {
      * first value is the minimum number, second value is the maximum number
      */
     private final int[] range = new int[2];
-    private String currentGameURL = "localhost:8080";
+    private final String currentGameURL;
 
     public String getCurrentGameURL() {
         return currentGameURL;
-    }
-
-    public void setCurrentGameURL(String currentGameURL) {
-        this.currentGameURL = currentGameURL;
     }
 
     public enum Difficulty {
@@ -91,12 +86,8 @@ public class NumberGame {
         return HttpClientClass.checkIfValidServer(url);
     }
 
-    public int getCorrectNumber() {
-        return correctNumber;
-    }
-
     /**
-     * @param guess Returns true if guess is correct
+     * @param guess Returns true if the guess is correct
      */
     public boolean checkIfWin(int guess) {
         guessesLeft -= 1;

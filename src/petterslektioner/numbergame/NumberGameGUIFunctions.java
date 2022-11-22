@@ -4,19 +4,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static petterslektioner.numbergame.HttpClientClass.getPublicIP;
+
 public class NumberGameGUIFunctions {
-    public boolean GuessButtonPressed(NumberGame currentGame, String guess, JLabel debugLabel) {
+    public boolean GuessButtonPressed(NumberGame currentGame, String guess) {
         int guessInt;
 
-        if(guess == "DEBUG"){
-            //TODO DEBUG stuff
-        }
         //Error Handling
         try {
             guessInt = Integer.parseInt(guess);
@@ -68,28 +65,6 @@ public class NumberGameGUIFunctions {
         }
 
         return true;
-    }
-
-
-
-    private String getLocalIP(){
-        try (final DatagramSocket datagramSocket = new DatagramSocket()) {
-            datagramSocket.connect(InetAddress.getByName("8.8.8.8"), 12345);
-            return datagramSocket.getLocalAddress().getHostAddress();
-        } catch (UnknownHostException | SocketException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    private String getPublicIP(){
-        try {
-            URL whatismyip = new URL("http://checkip.amazonaws.com");
-            BufferedReader in = new BufferedReader(new InputStreamReader(
-                    whatismyip.openStream()));
-            return in.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     private String getDate(){
