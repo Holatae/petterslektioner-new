@@ -93,6 +93,7 @@ public class HttpClientClass {
         }
     }
     /**
+     * '
      * @return local IP adress of the user
      */
     @SuppressWarnings("unused")

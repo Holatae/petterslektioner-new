@@ -58,7 +58,7 @@ class NumberGameGUIFunctionsKT {
         return true;
     }
 
-    private fun getDate(): String? {
+    private fun getDate(): String {
         val dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss")
         val now = LocalDateTime.now()
         return dtf.format(now)
