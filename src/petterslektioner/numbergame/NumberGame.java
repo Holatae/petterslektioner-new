@@ -104,8 +104,9 @@ public class NumberGame {
      * @param guess Returns true if the guess is correct
      */
     public boolean checkIfWin(int guess) {
-        guessesLeft -= 1;
-        return guess == correctNumber;
+        if(guess == correctNumber){ return true;}
+        else{guessesLeft -= 1;}
+        return false;
     }
 
     public int getGuessesLeft() {

@@ -31,6 +31,7 @@ public class NumberGameGUIFunctions {
             currentGame.setDebugMode(true);
             return true;
         }
+
         //End of Error Handling
 
         if (currentGame.checkIfWin(guessInt)){
