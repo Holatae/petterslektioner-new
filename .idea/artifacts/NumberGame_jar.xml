@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="NumberGame:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/NumberGame_jar</output-path>
+    <root id="archive" name="NumberGame.jar">
+      <element id="module-output" name="Petterslektioner" />
+      <element id="extracted-dir" path="$USER_HOME$/Dropbox/Mac/Downloads/java-json.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

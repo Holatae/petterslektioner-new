@@ -161,6 +161,10 @@ public class NumberGameGUI extends javax.swing.JFrame {
         if(!nggf.GuessButtonPressed(currentGame, guessTextArea.getText())){
             guessButton.setEnabled(false);
         }
+        if(currentGame.isDebugMode()){
+            guessTextArea.setText(String.valueOf(currentGame.getCorrectNumber()));
+            currentGame.setDebugMode(false);
+        }
         guessesLeftLabel.setText(String.valueOf(currentGame.getGuessesLeft()));
     }//GEN-LAST:event_guessButtonActionPerformed
 

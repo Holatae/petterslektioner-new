@@ -3,6 +3,10 @@ package petterslektioner.numbergame;
 import javax.swing.*;
 
 public class NumberGame {
+    public int getCorrectNumber() {
+        return correctNumber;
+    }
+
     private final int correctNumber;
     private int guessesLeft;
     private final int maxNumberOfGuesses;
@@ -12,6 +16,16 @@ public class NumberGame {
      */
     private final int[] range = new int[2];
     private final String currentGameURL;
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
+    }
+
+    private boolean debugMode = false;
 
     public String getCurrentGameURL() {
         return currentGameURL;
@@ -49,14 +63,14 @@ public class NumberGame {
             case MEDIUM -> {
                 range[0] = 1;
                 range[1] = 100;
-                maxNumberOfGuesses = 4;
+                maxNumberOfGuesses = 5;
                 currentDifficulty = Difficulty.MEDIUM;
             }
             case HARD -> {
                 range[0] = 1;
                 range[1] = 1000;
 
-                maxNumberOfGuesses = 3;
+                maxNumberOfGuesses = 7;
                 currentDifficulty = Difficulty.HARD;
             }
             case IMPOSSIBLE -> {
@@ -90,8 +104,9 @@ public class NumberGame {
      * @param guess Returns true if the guess is correct
      */
     public boolean checkIfWin(int guess) {
-        guessesLeft -= 1;
-        return guess == correctNumber;
+        if(guess == correctNumber){ return true;}
+        else{guessesLeft -= 1;}
+        return false;
     }
 
     public int getGuessesLeft() {
