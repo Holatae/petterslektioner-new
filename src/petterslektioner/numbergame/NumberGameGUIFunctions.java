@@ -39,11 +39,9 @@ public class NumberGameGUIFunctions {
             JOptionPane.showMessageDialog(null, "You won!");
             String name = JOptionPane.showInputDialog(null, "Skriv ditt namn");
 
-            // Sets the difficulty ID
-            int difficultyID = Integer.parseInt(null);
-
+            int difficultyID;
             switch (currentGame.getCurrentDifficulty()){
-                case "EASY" ->difficultyID = 1;
+                case "EASY" -> difficultyID = 1;
                 case "MEDIUM" -> difficultyID = 2;
                 case "HARD" -> difficultyID = 3;
                 case "IMPOSSIBLE" -> difficultyID = 4;
