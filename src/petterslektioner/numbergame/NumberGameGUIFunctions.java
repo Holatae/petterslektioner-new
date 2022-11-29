@@ -60,7 +60,7 @@ public class NumberGameGUIFunctions {
         }
 
         if(currentGame.getGuessesLeft() <= 0){
-            JOptionPane.showMessageDialog(null, "Sug kuk");
+            JOptionPane.showMessageDialog(null, "You lost");
             return false;
         }
 
