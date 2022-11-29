@@ -39,12 +39,25 @@ public class NumberGameGUIFunctions {
             JOptionPane.showMessageDialog(null, "You won!");
             String name = JOptionPane.showInputDialog(null, "Skriv ditt namn");
 
+            // Sets the difficulty ID
+            int difficultyID = Integer.parseInt(null);
+
+            switch (currentGame.getCurrentDifficulty()){
+                case "EASY" ->difficultyID = 1;
+                case "MEDIUM" -> difficultyID = 2;
+                case "HARD" -> difficultyID = 3;
+                case "IMPOSSIBLE" -> difficultyID = 4;
+
+                default -> difficultyID = 0;
+            }
+
             var values = new JSONObject();
             try {
                 values.put("name", name);
                 values.put("ip", getPublicIP());
                 values.put("difficulty", currentGame.getCurrentDifficulty());
                 values.put("date", getDate());
+                values.put("difficulty_id", difficultyID);
             } catch (JSONException e) {
                 throw new RuntimeException(e);
             }
