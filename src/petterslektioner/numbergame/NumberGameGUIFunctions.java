@@ -25,6 +25,12 @@ public class NumberGameGUIFunctions {
             JOptionPane.showMessageDialog(null, "No game is running");
             return false;
         }
+
+        // Debug
+        if (guessInt == -69){
+            currentGame.setDebugMode(true);
+            return true;
+        }
         //End of Error Handling
 
         if (currentGame.checkIfWin(guessInt)){
