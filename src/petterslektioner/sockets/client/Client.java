@@ -34,11 +34,11 @@ public class Client {
                     Scanner scanner = new Scanner(System.in);
                     System.out.println("Enter name: ");
                     String name = scanner.nextLine();
-                    name = name + ": ";
+                    sendNameToServer(name, socket);
                     System.out.println("Enter message: ");
                     while (true){
                         String message = scanner.nextLine();
-                        sendMessageToServer(name, message, socket);
+                        sendMessageToServer(message, socket);
                     }
                 }
             }).start();
@@ -81,11 +81,21 @@ public class Client {
         return message;
     }
 
-    private void sendMessageToServer(String name, String message, Socket socket){
+    private void sendMessageToServer(String message, Socket socket){
         // Send message to server
         try {
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-            out.print(name + message);
+            out.print(message);
+            out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void sendNameToServer(String name, Socket socket){
+        try {
+            PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+            out.print(name);
             out.flush();
         } catch (IOException e) {
             throw new RuntimeException(e);
