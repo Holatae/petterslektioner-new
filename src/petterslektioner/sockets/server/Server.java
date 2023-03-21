@@ -178,6 +178,12 @@ public class Server {
                         return;
                     }
                     System.out.println(user.getName() + ": " + message);
+
+                    // if it is only one client connected. Then send a message that says that no one is connected
+                    if (UserAdministration.getUsers().size() == 1){
+                        ChatControl.sendMessageToUser(user, "No one is connected");
+                        return;
+                    }
                     sendMessageToClient(user.getName(), message, user.getSocket());
                 }
             } catch (IOException e) {

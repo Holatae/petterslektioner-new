@@ -84,6 +84,10 @@ public class Client {
     private void sendMessageToServer(String message, Socket socket){
         // Send message to server
         try {
+            if (message.equals("exit")) {
+                socket.close();
+                System.exit(0);
+            }
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
             out.print(message);
             out.flush();
