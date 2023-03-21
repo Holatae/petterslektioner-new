@@ -1,5 +1,9 @@
 package petterslektioner.sockets.server;
 
+import petterslektioner.sockets.server.abstracts.Command;
+import petterslektioner.sockets.server.administration.UserAdministration;
+import petterslektioner.sockets.server.exceptions.PermissionDeniedException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -63,32 +67,13 @@ public class Server {
                 public void run() {
                     Scanner scanner = new Scanner(System.in);
                     while (!done) {
-                        String command = scanner.nextLine();
-//                        if (command.equals("stop")) {
-//                            stopServer();
-//                        }
-//                        if (command.equals("view")){
-//                            synchronized (users){
-//                                 ViewCommand viewCommand = new ViewCommand(users);
-//                                 viewCommand.execute(serverUser);
-//
-//                            }
-//                        }
-//                        if (command.contains("kick")){
-//                            for (User user: users
-//                                 ) {
-//                                if (user.getName().equals(command.split(" ")[1])){
-//                                    KickCommand kickCommand = new KickCommand(users, user);
-//                                    kickCommand.execute(serverUser);
-//                                }
-//                            }
-//                        }
-//                        if (command.equals("help")){
-//                            System.out.println("stop - stops the server");
-//                            System.out.println("view - shows all users");
-//                            System.out.println("help - shows all commands");
-//                            System.out.println("kick <username> - kicks the user");
-//                        }
+                        String commandFromServer = scanner.nextLine();
+                        Command command = CommandFactory.getCommand(commandFromServer, serverUser);
+                        try {
+                            command.execute();
+                        } catch (PermissionDeniedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             });
@@ -122,7 +107,7 @@ public class Server {
      * @param currentClientSocket - The socket of the client that should not get the message
      */
     private void sendMessageToClient(String sendingUser, String message, Socket currentClientSocket) {
-        synchronized (users){
+        synchronized (UserAdministration.getUsers()){
             for (User user : UserAdministration.getUsers()
                  ) {
                 // Send message to client
@@ -196,8 +181,8 @@ public class Server {
                     sendMessageToClient(user.getName(), message, user.getSocket());
                 }
             } catch (IOException e) {
-                e.printStackTrace();
-            }
+                throw new RuntimeException(e);
+            } catch (PermissionDeniedException ignored) {}
         }
     }
 

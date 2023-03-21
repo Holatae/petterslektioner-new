@@ -3,10 +3,11 @@ package petterslektioner.sockets.server.commands;
 import petterslektioner.sockets.server.ChatControl;
 import petterslektioner.sockets.server.User;
 import petterslektioner.sockets.server.abstracts.Command;
+import petterslektioner.sockets.server.administration.UserAdministration;
 
-public class UnknownCommand extends Command {
-    public UnknownCommand(User user) {
-        super(user);
+public class AdminlistCommand extends Command {
+    public AdminlistCommand(User runningsUser) {
+        super(runningsUser);
     }
 
     @Override
@@ -16,12 +17,12 @@ public class UnknownCommand extends Command {
 
     @Override
     public String getCommand() {
-        return null;
+        return "adminlist";
     }
 
     @Override
     public String getHelpText() {
-        return null;
+        return "Lists all admins\n";
     }
 
     @Override
@@ -31,7 +32,11 @@ public class UnknownCommand extends Command {
 
     @Override
     public void execute() {
-        ChatControl.sendMessageToUser(runningUser, "Unknown command");
-
+        for (User user: UserAdministration.getUsers()
+             ) {
+            if (user.isAdmin()){
+                ChatControl.sendMessageToUser(user, user.getName());
+            }
+        }
     }
 }

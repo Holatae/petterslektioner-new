@@ -1,13 +1,16 @@
 package petterslektioner.sockets.server.commands;
 
+import petterslektioner.sockets.server.ChatControl;
 import petterslektioner.sockets.server.User;
 import petterslektioner.sockets.server.abstracts.Command;
 import petterslektioner.sockets.server.exceptions.PermissionDeniedException;
 
-import java.util.List;
-
-public class ViewCommand extends Command {
-    private final List<User> users;
+public class AdminCommand extends Command {
+    private User userToMakeAdmin;
+    public AdminCommand(User runningUser, User userToMakeAdmin) {
+        super(runningUser);
+        this.userToMakeAdmin = userToMakeAdmin;
+    }
 
     @Override
     public boolean requireAdminPrivileges() {
@@ -16,12 +19,12 @@ public class ViewCommand extends Command {
 
     @Override
     public String getCommand() {
-        return "view";
+        return "admin";
     }
 
     @Override
     public String getHelpText() {
-        return "Lists all users\n";
+        return "Makes a user an admin\n";
     }
 
     @Override
@@ -31,17 +34,8 @@ public class ViewCommand extends Command {
 
     @Override
     public void execute() throws PermissionDeniedException {
-        if (!runningUser.isAdmin()) {
-            throw new PermissionDeniedException(runningUser);
-        }
-
-        for (User user : users) {
-            System.out.println(user.getName() + " " + user.getSocket().getInetAddress());
-        }
-    }
-
-    public ViewCommand(User user, List<User> users) {
-        super(user);
-        this.users = users;
+        if (!runningUser.isAdmin()){throw new PermissionDeniedException(runningUser);}
+        userToMakeAdmin.setAdmin(true);
+        ChatControl.sendMessageToUser(runningUser, userToMakeAdmin.getName() + ": Is now an Admin");
     }
 }

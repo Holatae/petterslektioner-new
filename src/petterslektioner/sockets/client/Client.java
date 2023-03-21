@@ -73,12 +73,12 @@ public class Client {
     }
 
     private String buildStringFromChars(ArrayList<Character> chars) {
-        String message = "";
+        StringBuilder message = new StringBuilder();
         for (Character character : chars
         ) {
-            message += character;
+            message.append(character);
         }
-        return message;
+        return message.toString();
     }
 
     private void sendMessageToServer(String message, Socket socket){

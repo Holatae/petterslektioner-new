@@ -1,12 +1,13 @@
 package petterslektioner.sockets.server.commands;
 
-import petterslektioner.sockets.server.ChatControl;
 import petterslektioner.sockets.server.User;
 import petterslektioner.sockets.server.abstracts.Command;
 
-public class UnknownCommand extends Command {
-    public UnknownCommand(User user) {
-        super(user);
+public class RenameCommand extends Command {
+    private final String nameToChangeTo;
+    public RenameCommand(User runningUser, String nameToChangeTo) {
+        super(runningUser);
+        this.nameToChangeTo = nameToChangeTo;
     }
 
     @Override
@@ -16,12 +17,12 @@ public class UnknownCommand extends Command {
 
     @Override
     public String getCommand() {
-        return null;
+        return "rename";
     }
 
     @Override
     public String getHelpText() {
-        return null;
+        return "Changes your name\n";
     }
 
     @Override
@@ -31,7 +32,6 @@ public class UnknownCommand extends Command {
 
     @Override
     public void execute() {
-        ChatControl.sendMessageToUser(runningUser, "Unknown command");
-
+        runningUser.setName(nameToChangeTo);
     }
 }

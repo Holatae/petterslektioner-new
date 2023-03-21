@@ -1,21 +1,19 @@
 package petterslektioner.sockets.server.commands;
 
-import petterslektioner.sockets.server.ChatControll;
-import petterslektioner.sockets.server.Command;
+import petterslektioner.sockets.server.ChatControl;
 import petterslektioner.sockets.server.User;
+import petterslektioner.sockets.server.abstracts.Command;
+import petterslektioner.sockets.server.administration.UserAdministration;
+import petterslektioner.sockets.server.exceptions.PermissionDeniedException;
+import petterslektioner.sockets.server.exceptions.UserNotFoundException;
 
 import java.io.IOException;
-import java.util.List;
 
 public class KickCommand extends Command {
-
-
-    private final List<User> users;
     private final User userToKick;
 
-    public KickCommand(User runningUser, List<User> users, User userToKick) {
+    public KickCommand(User runningUser, User userToKick) {
         super(runningUser);
-        this.users = users;
         this.userToKick = userToKick;
     }
 
@@ -26,12 +24,12 @@ public class KickCommand extends Command {
 
     @Override
     public String getCommand() {
-        return null;
+        return "kick";
     }
 
     @Override
     public String getHelpText() {
-        return null;
+        return "Kicks a user from the server\n";
     }
 
     @Override
@@ -40,18 +38,23 @@ public class KickCommand extends Command {
     }
 
     @Override
-    public void execute() {
+    public void execute() throws PermissionDeniedException {
         if (!runningUser.isAdmin()) {
-            ChatControll.sendMessageToUser(runningUser, "You do not have the required privileges to kick users");
+            throw new PermissionDeniedException(runningUser);
+        }
+        if (userToKick == null) {
+            ChatControl.sendMessageToUser(runningUser, "User not found");
             return;
         }
 
-        users.remove(userToKick);
         try {
-            ChatControll.sendMessageToUser(userToKick, "You have been kicked from the server");
+            UserAdministration.deleteUser(userToKick);
+            ChatControl.sendMessageToUser(userToKick, "You have been kicked from the server");
             userToKick.getSocket().close();
         } catch (IOException e) {
             throw new RuntimeException(e);
+        } catch (UserNotFoundException e) {
+            ChatControl.sendMessageToUser(runningUser, "User not found");
         }
     }
 

@@ -1,10 +1,15 @@
 package petterslektioner.sockets.server.commands;
 
-import petterslektioner.sockets.server.ChatControll;
-import petterslektioner.sockets.server.Command;
+import petterslektioner.sockets.server.ChatControl;
 import petterslektioner.sockets.server.User;
+import petterslektioner.sockets.server.abstracts.Command;
 
 public class HelpCommand extends Command {
+    private AdminCommand adminCommand;
+    private AdminlistCommand adminlistCommand;
+    private KickCommand kickCommand;
+    private RenameCommand renameCommand;
+    private ViewCommand viewCommand;
     public HelpCommand(User runningUser) {
         super(runningUser);
     }
@@ -16,12 +21,12 @@ public class HelpCommand extends Command {
 
     @Override
     public String getCommand() {
-        return null;
+        return "help";
     }
 
     @Override
     public String getHelpText() {
-        return null;
+        return "Lists all commands\n";
     }
 
     @Override
@@ -31,7 +36,17 @@ public class HelpCommand extends Command {
 
     @Override
     public void execute() {
-        ChatControll.sendMessageToUser(runningUser, "Commands: AIDGOSDJG");
+        final String middleThing = " - ";
+        adminCommand = new AdminCommand(null, null);
+        adminlistCommand = new AdminlistCommand(null);
+        kickCommand = new KickCommand(null, null);
+        renameCommand = new RenameCommand(null, null);
+        viewCommand = new ViewCommand(null, null);
 
+        ChatControl.sendMessageToUser(runningUser, adminCommand.getCommand() + middleThing + adminCommand.getHelpText());
+        ChatControl.sendMessageToUser(runningUser, adminlistCommand.getCommand() + middleThing + adminlistCommand.getHelpText());
+        ChatControl.sendMessageToUser(runningUser, kickCommand.getCommand() + middleThing + kickCommand.getHelpText());
+        ChatControl.sendMessageToUser(runningUser, renameCommand.getCommand() + middleThing + renameCommand.getHelpText());
+        ChatControl.sendMessageToUser(runningUser, viewCommand.getCommand() + middleThing + viewCommand.getHelpText());
     }
 }
