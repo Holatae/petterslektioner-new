@@ -4,10 +4,13 @@
  */
 package petterslektioner.texteditor;
 
+import javax.swing.*;
+
 /**
  *
  * @author victor
  */
+@SuppressWarnings({"Convert2Lambda", "Anonymous2MethodRef", "unused", "FieldCanBeLocal"})
 public class Texteditor extends javax.swing.JFrame {
 
     /**
@@ -169,7 +172,7 @@ public class Texteditor extends javax.swing.JFrame {
         TextEditorActions actions = new TextEditorActions();
         String[] returnvalue = actions.openFileButtonAction();
         if (returnvalue == null){return;}
-        
+
         filePathText.setText(returnvalue[0]);
         fileContentTextbox.setText(returnvalue[1]);
     }//GEN-LAST:event_openFileActionPerformed
@@ -183,24 +186,24 @@ public class Texteditor extends javax.swing.JFrame {
         // TODO add your handling code here:
         TextEditorActions actions = new TextEditorActions();
         filePathText.setText(actions.saveFileButtonAction(filePathText.getText(), fileContentTextbox.getText()));
-        
+
     }//GEN-LAST:event_saveFileActionPerformed
 
     private void saveAsFileButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveAsFileButtonActionPerformed
         // TODO add your handling code here:
         TextEditorActions actions = new TextEditorActions();
         filePathText.setText(actions.saveAsFileButtonAction(fileContentTextbox.getText()));
-        
+
     }//GEN-LAST:event_saveAsFileButtonActionPerformed
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -209,13 +212,8 @@ public class Texteditor extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Texteditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Texteditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Texteditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
+                 UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Texteditor.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
