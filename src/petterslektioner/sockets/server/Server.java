@@ -19,6 +19,9 @@ public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
 
+    private boolean isAlive = false;
+    private final String KEEP_ALIVE_MESSAGE = "ABC123";
+
     private final List<Socket> firstTimeConnectedSocket = Collections.synchronizedList(new ArrayList<>());
 
     private final List<User> users = Collections.synchronizedList(new ArrayList<>());
@@ -56,6 +59,7 @@ public class Server {
                     }
                 }
             };
+
             User serverUser = new User(null, null);
             serverUser.setAdmin(true);
             Thread checkForFirstTimeUsersThread = new Thread(checkForFirstTimeUsers);
@@ -78,6 +82,16 @@ public class Server {
                 }
             });
             commandThread.start();
+            Runnable checkIfSocketIsAlive = new Runnable() {
+                @Override
+                public void run() {
+                    while (!done) {
+                        checkIfSocketIsAlive();
+                    }
+                }
+            };
+            Thread checkIfSocketIsAliveThread = new Thread(checkIfSocketIsAlive);
+            checkIfSocketIsAliveThread.start();
             // Wait for client to connect
             System.out.println("Waiting for client to connect");
             while (!done) {
@@ -177,6 +191,10 @@ public class Server {
                         command.execute();
                         return;
                     }
+                    if (message.equals(KEEP_ALIVE_MESSAGE)){
+                        isAlive = true;
+                        return;
+                    }
                     System.out.println(user.getName() + ": " + message);
 
                     // if it is only one client connected. Then send a message that says that no one is connected
@@ -200,6 +218,28 @@ public class Server {
             message += character;
         }
         return message;
+    }
+
+    private synchronized void checkIfSocketIsAlive(){
+        for (User user : UserAdministration.getUsers()
+        ) {
+            ChatControl.sendMessageToUser(user, KEEP_ALIVE_MESSAGE);
+            try {
+                Thread.sleep(1000);
+                if (isAlive) {
+                    isAlive = false;
+                } else {
+                    ChatControl.sendMessageToUser(user, "You have been disconnected");
+                    UserAdministration.getUsers().remove(user);
+
+                    user.getSocket().close();
+                }
+
+            } catch (InterruptedException | IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
 }

@@ -11,7 +11,9 @@ public class UserAdministration {
     private static final List<User> users = Collections.synchronizedList(new ArrayList<>());
 
     public static List<User> getUsers() {
-        return users;
+        synchronized (users){
+            return users;
+        }
     }
 
     public static void addUser(User user){

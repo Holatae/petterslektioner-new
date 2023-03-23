@@ -64,6 +64,10 @@ public class Client {
                 if (messageArr.size() > 0)
                 {
                     String message = buildStringFromChars(messageArr);
+                    if (message.equals("ABC123")) {
+                        sendMessageToServer("ABC123", socket);
+                        return;
+                    }
                     System.out.println(message);
                 }
                 }
